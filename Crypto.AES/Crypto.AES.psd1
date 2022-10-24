@@ -9,7 +9,6 @@
     Description       = 'PowerShell module for cryptography (AES)'
     PowerShellVersion = '5.0'
     FunctionsToExport = '*'
-    ScriptsToProcess  = @('Public\Classes\IVGenerator.ps1')
     PrivateData       = @{
         PSData = @{
         }

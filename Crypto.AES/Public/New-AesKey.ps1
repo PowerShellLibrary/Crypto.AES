@@ -19,7 +19,6 @@ function New-AesKey {
         $aes = New-AesManagedObject
         $aes.GenerateKey()
 
-
         if ($Format -eq [AesKeyFormat]::String) {
             [System.Convert]::ToBase64String($aes.Key)
         }

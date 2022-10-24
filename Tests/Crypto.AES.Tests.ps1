@@ -3,6 +3,8 @@ Import-Module -Name Pester -Force
 Import-Module .\Crypto.AES\Crypto.AES.psm1 -Force
 
 Describe 'Crypto.AES.Tests' {
+    $encoding = [System.Text.UTF8Encoding]::new()
+
     Context "AES key generation" {
         It "Should return key as string - default" {
             New-AesKey | Should -BeOfType [String]
@@ -12,19 +14,6 @@ Describe 'Crypto.AES.Tests' {
         }
         It "Should return key as Object[]- explicit" {
             (New-AesKey -Format ByteArray) -is [System.Object[]] | Should -BeTrue
-        }
-    }
-
-    Context "IVGenerator" {
-        $obj = [IVGenerator]::new()
-        $v1 = $obj.GenerateIV()
-        $v2 = $obj.GenerateIV()
-
-        It "Should return valid type" {
-            $v1 -is [System.Byte[]] | Should -BeTrue
-        }
-        It "Should generate unique keys" {
-            $v1 | Should -Not -Be $v2
         }
     }
 
