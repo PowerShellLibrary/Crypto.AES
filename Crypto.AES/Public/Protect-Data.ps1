@@ -30,14 +30,21 @@ function Protect-Data {
         }
 
         $gcm.Encrypt($Nonce, $Data, $cipherOutput, $tag)
+        $gcm.Dispose()
 
         if ($Combined) {
-            return $tag + $cipherOutput + $Nonce
+            $output = [byte[]]::new($cipherOutput.Length + $Nonce.Length + $tag.Length)
+            [System.Buffer]::BlockCopy($tag, 0, $output, 0, $tag.Length);
+            [System.Buffer]::BlockCopy($cipherOutput, 0, $output, $tag.Length, $cipherOutput.Length);
+            [System.Buffer]::BlockCopy($Nonce, 0, $output, $tag.Length + $cipherOutput.Length, $Nonce.Length);
+            Write-Output $output -NoEnumerate
         }
-        @{
-            CipherText = $cipherOutput
-            Nonce      = $Nonce
-            Tag        = $tag
+        else {
+            @{
+                CipherText = $cipherOutput
+                Nonce      = $Nonce
+                Tag        = $tag
+            }
         }
     }
 

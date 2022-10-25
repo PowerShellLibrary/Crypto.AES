@@ -25,7 +25,7 @@ function Unprotect-Data {
             $gcm = [System.Security.Cryptography.AesGcm]::new($Key)
         }
         $gcm.Decrypt($nonce, $Data, $Tag, $decrypted)
-        $decrypted
+        Write-Output $decrypted -NoEnumerate
     }
 
     end {

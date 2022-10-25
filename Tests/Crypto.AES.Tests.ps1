@@ -46,7 +46,7 @@ Describe 'Crypto.AES.Tests' {
             $r.CipherText | Should -BeNullOrEmpty
             $r.Nonce | Should -BeNullOrEmpty
             $r.Tag | Should -BeNullOrEmpty
-            $r -is [System.Object[]] | Should -BeTrue
+            $r -is [byte[]] | Should -BeTrue
             $r.Length | Should -BeExactly ($data.Length + $nonce.Length + 16)
         }
     }
