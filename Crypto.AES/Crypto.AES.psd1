@@ -7,7 +7,7 @@
     CompanyName       = 'Alan Plocieniak'
     Copyright         = '(c) 2022 Alan Plocieniak. All rights reserved.'
     Description       = 'PowerShell module for cryptography (AES)'
-    PowerShellVersion = '5.0'
+    PowerShellVersion = '7.0'
     FunctionsToExport = '*'
     PrivateData       = @{
         PSData = @{
