@@ -1,0 +1,10 @@
+name: Publish  Module
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-module:
+    name: Publish Module
+    uses: PowerShellLibrary/.github/.github/workflows/publish-module.yml@master
+    secrets: inherit
