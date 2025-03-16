@@ -31,6 +31,9 @@ function Protect-Data {
         $tag = [byte[]]::new(16)
 
         if ($PSCmdlet.ParameterSetName -eq 'Key') {
+            if ($Key.Length -notin @(16, 24, 32)) {
+                throw "Invalid AES key length. Must be 16, 24, or 32 bytes."
+            }
             $GCM = [System.Security.Cryptography.AesGcm]::new($Key)
             try {
                 $GCM.Encrypt($Nonce, $Data, $cipherOutput, $tag)

@@ -17,6 +17,12 @@ Describe 'Crypto.AES.Tests' {
         }
     }
 
+    Context "Protect-Data - parameter validation" {
+        It "Throws error for invalid key length" {
+            { Protect-Data -Key ([byte[]]::new(10)) -Data ([byte[]]::new(16)) } | Should -Throw "Invalid AES key length. Must be 16, 24, or 32 bytes."
+        }
+    }
+
     Context "Protect-Data - Result" {
         $Key = [byte[]]::new(32)
         $nonce = [byte[]]::new(12)
