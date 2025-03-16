@@ -58,10 +58,14 @@ Describe 'Crypto.AES.Tests' {
     }
 
     Context "Protect-Data - signature" {
-        $Key = [byte[]]::new(32)
+            $Key = [byte[]]::new(32)
         $nonce = [byte[]]::new(12)
+            $nonce[0] = 104 # random value to test with mock
         $data = $encoding.GetBytes("Test")
 
+            Mock -CommandName Get-RandomNonce -ModuleName Crypto.AES -MockWith {
+                Write-Output $nonce -NoEnumerate
+            }
 
         It "optional nonce" {
             $r_explicit = Protect-Data -Key $Key -Data $data -Nonce $nonce

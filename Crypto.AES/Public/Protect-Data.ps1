@@ -24,8 +24,7 @@ function Protect-Data {
     process {
         Write-Verbose "Cmdlet Protect-Data - Process"
         if (!$Nonce) {
-            $Nonce = [byte[]]::new(12)
-            [System.Security.Cryptography.RandomNumberGenerator]::Fill($Nonce)
+            $Nonce = Get-RandomNonce -Length 12
         }
         $cipherOutput = [byte[]]::new($Data.Length)
         $tag = [byte[]]::new(16)
