@@ -1,0 +1,11 @@
+name: Invoke Pester Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  invoke-pester:
+    uses: PowerShellLibrary/.github/.github/workflows/invoke-pester.yml@master

@@ -1,9 +1,9 @@
-Clear-Host
-Import-Module -Name Pester -Force
 Import-Module .\Crypto.AES\Crypto.AES.psm1 -Force
 
 Describe 'Crypto.AES.Tests' {
-    $encoding = [System.Text.UTF8Encoding]::new()
+    BeforeAll {
+        $encoding = [System.Text.UTF8Encoding]::new()
+    }
 
     Context "AES key generation" {
         It "Should return key as string - default" {
@@ -24,9 +24,11 @@ Describe 'Crypto.AES.Tests' {
     }
 
     Context "Protect-Data - Result" {
-        $Key = [byte[]]::new(32)
-        $nonce = [byte[]]::new(12)
-        $data = $encoding.GetBytes("Test")
+        BeforeAll {
+            $Key = [byte[]]::new(32)
+            $nonce = [byte[]]::new(12)
+            $data = $encoding.GetBytes("Test")
+        }
 
         It "has correct size" {
             $r_key = Protect-Data -Key $Key -Data $data -Nonce $nonce
@@ -58,14 +60,16 @@ Describe 'Crypto.AES.Tests' {
     }
 
     Context "Protect-Data - signature" {
+        BeforeAll {
             $Key = [byte[]]::new(32)
-        $nonce = [byte[]]::new(12)
+            $nonce = [byte[]]::new(12)
             $nonce[0] = 104 # random value to test with mock
-        $data = $encoding.GetBytes("Test")
+            $data = $encoding.GetBytes("Test")
 
             Mock -CommandName Get-RandomNonce -ModuleName Crypto.AES -MockWith {
                 Write-Output $nonce -NoEnumerate
             }
+        }
 
         It "optional nonce" {
             $r_explicit = Protect-Data -Key $Key -Data $data -Nonce $nonce
@@ -89,9 +93,11 @@ Describe 'Crypto.AES.Tests' {
     }
 
     Context "Protect-Data - nonce" {
-        $Key = [byte[]]::new(32)
-        $nonce = [byte[]]::new(12)
-        $data = $encoding.GetBytes("Test")
+        BeforeAll {
+            $Key = [byte[]]::new(32)
+            $nonce = [byte[]]::new(12)
+            $data = $encoding.GetBytes("Test")
+        }
 
         It "the same nonce" {
             $a = Protect-Data -Key $Key -Data $data -Nonce $nonce
@@ -115,10 +121,12 @@ Describe 'Crypto.AES.Tests' {
     }
 
     Context "Unprotect-Data" {
-        $Key = [byte[]]::new(32)
-        [byte[]]$nonce = @(228, 132, 78, 5, 31, 60, 78, 70, 192, 119, 50, 184)
-        [byte[]]$tag = @(188, 136, 244, 158, 253, 2, 183, 117, 127, 2, 193, 66, 39, 37, 94, 188)
-        $data = @(48, 22, 117, 218 )
+        BeforeAll {
+            $Key = [byte[]]::new(32)
+            [byte[]]$nonce = @(228, 132, 78, 5, 31, 60, 78, 70, 192, 119, 50, 184)
+            [byte[]]$tag = @(188, 136, 244, 158, 253, 2, 183, 117, 127, 2, 193, 66, 39, 37, 94, 188)
+            $data = @(48, 22, 117, 218 )
+        }
 
         It "has correct size" {
             $r_key = Unprotect-Data -Key $Key -Data $data -Nonce $nonce -Tag $tag
